@@ -4,6 +4,10 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateDetalleVentaDto {
   @ApiProperty()
+  @IsInt({ message: 'El idVenta debe ser un número entero' })
+  idVenta: number;
+
+  @ApiProperty()
   @IsInt({ message: 'El idProducto debe ser un número entero' })
   idProducto: number;
 
