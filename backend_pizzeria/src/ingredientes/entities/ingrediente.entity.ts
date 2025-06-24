@@ -1,5 +1,5 @@
-import { DetalleVenta } from 'src/detalle_venta/entities/detalle_venta.entity';
 import { ProductosIngrediente } from 'src/productos_ingredientes/entities/productos_ingrediente.entity';
+import { ProveedoresIngrediente } from 'src/proveedores_ingredientes/entities/proveedores_ingrediente.entity';
 import {
   Column,
   CreateDateColumn,
@@ -10,25 +10,19 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('productos')
-export class Producto {
+@Entity('ingredientes')
+export class Ingrediente {
   @PrimaryGeneratedColumn('identity')
   id: number;
-
-  @Column('varchar', { length: 500 })
-  imagen: string;
 
   @Column('varchar', { length: 50 })
   nombre: string;
 
-  @Column('text')
-  descripcion: string;
+  @Column('decimal', { precision: 10, scale: 2, name: 'cantidad_disponible' })
+  cantidadDisponible: number;
 
-  @Column('decimal', { precision: 10, scale: 2 })
-  precio: number;
-
-  @Column('int')
-  stock: number;
+  @Column({ length: 20, name: 'unidad_medida' })
+  unidadMedida: string;
 
   @CreateDateColumn({ name: 'fecha_creacion' })
   fechaCreacion: Date;
@@ -39,12 +33,15 @@ export class Producto {
   @DeleteDateColumn({ name: 'fecha_eliminacion', select: false })
   fechaEliminacion: Date;
 
-  @OneToMany(() => DetalleVenta, (detalle) => detalle.producto)
-  detalleVenta: DetalleVenta[];
+  @OneToMany(
+    () => ProveedoresIngrediente,
+    (proveedoresingredientes) => proveedoresingredientes.ingrediente,
+  )
+  proveedoresIngredientes: ProveedoresIngrediente[];
 
   @OneToMany(
     () => ProductosIngrediente,
-    (productoingrediente) => productoingrediente.producto,
+    (productoingrediente) => productoingrediente.ingrediente,
   )
   productoIngredientes: ProductosIngrediente[];
 }
